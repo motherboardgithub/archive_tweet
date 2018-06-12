@@ -65,37 +65,39 @@ class StdOutListener(StreamListener):
         reply_tweet_id          = tweet.get('in_reply_to_status_id_str')
         reply_tweet_screen_name = tweet.get('in_reply_to_screen_name')
         
-        # make the URL of the tweet to archive
-        tweet_to_archive = "https://twitter.com/%s/status/%s" % (reply_tweet_screen_name, reply_tweet_id)
+        if reply_tweet_id is not None:
         
-        # print confirmation of finding tweet
-        print "[*] Given tweet to archive: %s" % tweet_to_archive
+            # make the URL of the tweet to archive
+            tweet_to_archive = "https://twitter.com/%s/status/%s" % (reply_tweet_screen_name, reply_tweet_id)
         
-        # archive the tweet
-        internet_archive_url = internet_archive(tweet_to_archive)
+            # print confirmation of finding tweet
+            print "[*] Given tweet to archive: %s" % tweet_to_archive
         
-        # push to archive.is
-        print "[*] Pushing to archive.is..."
-        archiveis_result = archiveis.capture(tweet_to_archive).replace("http://", "https://")        
+            # archive the tweet
+            internet_archive_url = internet_archive(tweet_to_archive)
         
-        print "[!] Archived %s" % tweet_to_archive
-        print internet_archive_url
-        print archiveis_result
+            # push to archive.is
+            print "[*] Pushing to archive.is..."
+            archiveis_result = archiveis.capture(tweet_to_archive).replace("http://", "https://")        
+        
+            print "[!] Archived %s" % tweet_to_archive
+            print internet_archive_url
+            print archiveis_result
             
-        # sleep, so the bot doesn't immediately reply and potentially trigger bot alerts
-        time.sleep(10)
+            # sleep, so the bot doesn't immediately reply and potentially trigger bot alerts
+            time.sleep(10)
 
-        # content of tweet to send to requester
-        message = "Hey @%s, sure thing, here are the archive links: %s, %s" % (screen_name,internet_archive_url,archiveis_result)
+            # content of tweet to send to requester
+            message = "Hey @%s, sure thing, here are the archive links: %s, %s" % (screen_name,internet_archive_url,archiveis_result)
         
-        # post a reply to the tweet
-        api.update_status(message,tweet_id)
-        print "[!] Posted a reply"
+            # post a reply to the tweet
+            api.update_status(message,tweet_id)
+            print "[!] Posted a reply"
               
-        # sleep to avoid rate limiting
-        time.sleep(300)
+            # sleep to avoid rate limiting
+            time.sleep(300)
         
-        return True
+            return True
     
     def on_error(self, status):
         print "[!] ERROR: %s" % status
