@@ -1,4 +1,4 @@
-print "[*] Booting tweet_archiver.py..."
+print "[*] Booting archive_tweet.py..."
 
 import tweepy
 import time
