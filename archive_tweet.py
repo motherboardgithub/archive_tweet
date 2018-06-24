@@ -88,10 +88,10 @@ class StdOutListener(StreamListener):
             time.sleep(10)
 
             # content of tweet to send to requester
-            message = "Hey @%s, sure thing, here are the archive links: %s, %s" % (screen_name,internet_archive_url,archiveis_result)
+            message = "Sure thing, here are the archive links: %s, %s" % (internet_archive_url,archiveis_result)
         
             # post a reply to the tweet
-            api.update_status(message,tweet_id)
+            api.update_status(message,in_reply_to_status_id=tweet_id,auto_populate_reply_metadata=True)
             print "[!] Posted a reply"
               
             # sleep to avoid rate limiting
